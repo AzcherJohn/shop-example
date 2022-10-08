@@ -1,12 +1,15 @@
 import { useContext, useEffect, useState } from 'react';
+import {BrowserRouter, Link, Route, Routes} from "react-router-dom";
 
+import { AppContext } from './context/AppContext';
 //import logo from './logo.svg';
 import './App.css';
 import StoreFront from './components/StoreFront';
 import MainPanel from './dashboard/MainPanel';
 import Button from './UI-kit/Button';
+import ProductDetail from './components/ProductDetail';
+import NotesProduct from "./components/NotesProduct";
 
-import { AppContext } from './context/AppContext';
 //import Container from './UI-kit/Container';
 
 function App() {
@@ -29,21 +32,29 @@ function App() {
 
   if (isLoggin){
     return <>
-    <main className={`container py-4 px-2 gap-3 grid mx-auto ${appCont.isDarkTheme && "bg-gray-800"}`}>
-      <div>
-        {isAdmin ? <MainPanel /> : <StoreFront />}
-      </div>        
-      <div>
-        <Button className="btn-secundary" onClick={() => setIsLoggin(false)}>Logout</Button>
-        <Button className="btn-primary" onClick={() => setIsAdmin(!isAdmin)}>{isAdmin ? "Go to Store" : "Go to Panel"}</Button>
-        <Button className="btn-primary" onClick={() => appCont.onHandleThemeDark()}>Toggle Theme</Button>
-      </div>
-    </main>      
+    <BrowserRouter>
+      <main className={`container py-4 px-2 gap-3 grid mx-auto`}>
+        <div>
+          <Routes>
+            <Route exact path="/" element={<StoreFront />} />
+            <Route exact path="/dashboard" element={<MainPanel />} />
+            <Route path="/products/:id" element={<ProductDetail />} >
+              <Route exact path="notes" element={<NotesProduct />}/>
+            </Route>
+          </Routes>
+        </div>        
+        <div>
+          <Button className="btn-secundary" onClick={() => setIsLoggin(false)}>Logout</Button>
+          <Button className="btn-primary" onClick={() => appCont.onHandleThemeDark()}>Toggle Theme</Button>
+          <Link to={isAdmin ? "/" : "/dashboard"} onClick={() => setIsAdmin(!isAdmin)}>{isAdmin ? "Go to Store" : "Go to Panel"}</Link>
+        </div>
+      </main> 
+    </BrowserRouter>     
     </>
   } else {
     return <>
       <main className='px-8 py-4 gap-3 grid'>
-        <h1 className='font-black text-lg'>Please Login</h1>
+        <h1 className={`font-black text-lg`}>Please Login</h1>
         <div>
           <Button className="btn-primary" onClick={() => setIsLoggin(true)}>Login</Button>
         </div>        

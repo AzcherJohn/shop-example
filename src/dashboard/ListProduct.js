@@ -6,8 +6,8 @@ export default function ListProduct(props){
       {props.products && props.products.map((product, index) => {
          return <>
          <div>
-            <ProductCard details={product} key={index} />            
-            <Button className="action-delete" onClick={() => props.onDeleteClick(product.id)}>Delete</Button>
+            <ProductCard details={product} key={product.id} />            
+            <Button key={index} className="action-delete" onClick={() => props.onDeleteClick(product.id)}>Delete</Button>
          </div>
          </>
       })}

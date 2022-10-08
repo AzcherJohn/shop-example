@@ -7,9 +7,9 @@ function AppProvider(props){
 
    function handleThemeDark(){
       if (isDarkTheme) {         
-         document.body.classList.remove("bg-gray-800");
+         document.body.classList.remove("dark-mode");
       } else {         
-         document.body.classList.add("bg-gray-800");
+         document.body.classList.add("dark-mode");
       }
       setDarkTheme(!isDarkTheme);
    }

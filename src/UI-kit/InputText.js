@@ -9,7 +9,8 @@ export default function InputText(props){
    const className = clsx({
       "bg-stone-200/60": props.disabled,
       "border-red-600": props.error && !appCont.isDarkTheme,
-      "border-orange-300": props.error && appCont.isDarkTheme,
+      "border-orange-500": props.error && appCont.isDarkTheme,
+      "bg-gray-600": appCont.isDarkTheme,
    })
    return<input type={type && "text"} {...att} className={`p-2 border rounded-md border-slate-400 hover:border-cyan-500 ${className}`}></input>
 }
