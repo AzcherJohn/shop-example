@@ -1,4 +1,5 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
+import { AppContext } from "../context/AppContext";
 
 import AddProductForm from "./AddProductForm";
 import ListProduct from "./ListProduct";
@@ -8,6 +9,8 @@ export default function MainPanel(){
    const [description, setDescription] = useState("");
    const [validation, setValidation] = useState("");
    const [products, setProducts] = useState(() => JSON.parse(localStorage.getItem("products")) ?? []);
+
+   const appCont = useContext(AppContext);
 
    useEffect(() => {
       localStorage.setItem("products", JSON.stringify(products));
@@ -44,6 +47,6 @@ export default function MainPanel(){
          validation={validation}
          onFormSubmit={handleFormSubmit}
       />
-      {products.length <= 0 ? <p>Add your first product</p> : <ListProduct products={products} onDeleteClick={handleDeleteClick}/>}
+      {products.length <= 0 ? <p className={appCont.isDarkTheme && "text-white"}>Add your first product</p> : <ListProduct products={products} onDeleteClick={handleDeleteClick}/>}
    </>
 }
