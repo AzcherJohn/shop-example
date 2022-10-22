@@ -1,4 +1,9 @@
-# Getting Started with Create React App
+# Welcome to my example of a Online Store
+
+This is my personar project, this proyect it has been made with `React 18` and `Tailwind CSS 3.1.8`.
+Notice that **this is my first personal proyect and the purpose is to create my portfolio**
+
+## Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 

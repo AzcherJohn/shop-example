@@ -15,6 +15,98 @@ code {
     monospace;
 }
 
-.dark-mode{
-  @apply bg-gray-800 text-white;
+.dark{
+  @apply bg-slate-800 text-white;
+}
+#root{
+  min-height: 100vh;
+}
+main > section {
+  @apply w-full 
+}
+
+/*  Links   */ 
+.primary-link{
+  @apply text-teal-700 hover:text-teal-800 font-semibold;
+}
+.dark .primary-link{
+  @apply text-teal-500 hover:text-teal-400 font-semibold;
+}
+/*  Buttons  */
+.btn-link{
+  @apply text-white bg-teal-700 hover:bg-teal-600 rounded-md mx-2 transition-colors duration-150 align-middle inline px-6 py-3;
+}
+.dark .btn-link{
+  @apply bg-teal-500 hover:bg-teal-600 border border-slate-500;
+}
+
+.btn-cart{
+  @apply text-white bg-rose-700 hover:bg-rose-600 rounded-md mx-2 transition-colors duration-150 align-middle inline px-6 py-3;
+}
+
+/*  Navbar  */
+.active-nav{
+  @apply text-teal-900 hover:text-teal-700 border-b-teal-900 hover:border-b-teal-700 font-bold border-b-2 px-2;
+}
+.dark .active-nav{
+  @apply text-teal-600 hover:text-teal-500 border-b-teal-600 hover:border-b-teal-500;
+}
+
+/*  Tags  */
+h1{
+  @apply text-xl font-bold;
+}
+hr {
+  @apply bg-slate-700 dark:bg-slate-200 border-none h-px w-full;
+}
+
+/*  Arrows  */
+.arrow {
+  @apply border p-[2.5px] w-1 h-1 inline-block border-black dark:border-white;
+  border-width: 0 2px 2px 0;
+}
+.down {
+  transform: rotate(45deg);
+  -webkit-transform: rotate(45deg);
+}
+.up {
+  transform: rotate(-135deg);
+  -webkit-transform: rotate(-135deg);
+}
+
+/*     Table     */
+.datatable {
+  @apply border-collapse border-slate-400 dark:border-slate-300 border-opacity-0;
+}
+.datatable caption{
+  @apply text-lg font-bold;
+}
+.datatable-normal caption{
+  @apply py-3 px-5;
+}
+.datatable caption,
+.datatable thead{
+  @apply border-t-2 border-opacity-40 border-slate-400 dark:border-slate-300;
+}
+.datatable tr{
+  @apply border-b-2 border-opacity-40 border-slate-700 dark:border-slate-300;
+}
+.datatable caption,
+.datatable th{
+  @apply bg-teal-600;
+}
+.datatable th{
+  @apply text-left;
+}
+.datatable-normal tr th,
+.datatable-normal tr td{
+  @apply px-5 py-2;
+}
+
+/*   Image   */
+.product-image{
+  @apply h-14 bg-white dark:bg-slate-200 rounded-xl px-1;
+}
+.product-image-big{
+  @apply h-64 bg-white dark:bg-slate-200 rounded-xl px-1;
 }
