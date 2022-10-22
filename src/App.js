@@ -1,9 +1,8 @@
-import { useEffect, useState } from 'react';
-import { BrowserRouter, Link, Route, Routes } from "react-router-dom";
+import { useState } from 'react';
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { Provider } from 'react-redux';
 
 import { productStore } from './store/products';
-import Button from './UI-kit/Button';
 
 import MainPanel from './dashboard/MainPanel';
 
@@ -21,21 +20,7 @@ import ProductNutrition from './components/ProductNutrition';
 //import Container from './UI-kit/Container';
 
 function App() {
-  const [isLoggin, setIsLoggin] = useState(false);
-  const [isAdmin, setIsAdmin] = useState(false);
   const [product, setProduct] = useState({});
-
-  const title = "Azcher Shop ";
-
-  useEffect(() => {
-    if (!isLoggin) {
-      document.title = title + " | Home";
-    } else if (isAdmin) {      
-      document.title = title + " | Dashboard";
-    } else {
-      document.title = title + " | Login";      
-    }
-  },[isLoggin, isAdmin])
 
   function handleProductView(prod){
     setProduct(prod);
