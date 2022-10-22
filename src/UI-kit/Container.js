@@ -5,11 +5,11 @@ import InputText from './InputText';
 export default function Container(){
    return <>   
       <Link disabled={true}>Da click papu</Link>
-      <Button className="primary" disabled={true}>Primario</Button>
-      <Button className="primary">Primario</Button>
-      <Button className="secundary">Secundario</Button>
-      <Button className="secundary" disabled>Secundario</Button>
-      <Button className="delete">x</Button>
+      <Button category="primary" disabled={true}>Primario</Button>
+      <Button category="primary">Primario</Button>
+      <Button category="secundary">Secundario</Button>
+      <Button category="secundary" disabled>Secundario</Button>
+      <Button category="delete">x</Button>
       <InputText placeholder="Input"></InputText>
       <InputText placeholder="Input" disabled></InputText>
    </>
