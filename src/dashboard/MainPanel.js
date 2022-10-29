@@ -1,7 +1,11 @@
 import { useContext, useEffect, useState } from "react";
 import { AppContext } from "../context/AppContext";
+import ConfirmDialog from "../UI-kit/Dialog/ConfirmDialog";
+import Modal from "../UI-kit/Dialog/Modal";
+import Toast from "../UI-kit/Toast";
 
 import AddProductForm from "./AddProductForm";
+import EditProductForm from "./EditProductForm";
 import ListProduct from "./ListProduct";
 
 const optionsProduct = [
@@ -21,6 +25,7 @@ const nutritionTable = {
 const optionsImage = ["1414-circle.svg","1416-triangle.svg","1417-rounded-square.svg","1422-polygon.svg",]
 
 export default function MainPanel(){   
+   /*  New product  */
    const [name, setName] = useState("");
    const [description, setDescription] = useState("");
    const [nutrition, setNutrition] = useState(nutritionTable);
@@ -30,13 +35,22 @@ export default function MainPanel(){
    const [image, setImage] = useState("1");
    const [product, setProduct] = useState(optionsProduct[0].label);
    const [validation, setValidation] = useState("");
+
+   /*  All products  */
    const [products, setProducts] = useState(() => JSON.parse(localStorage.getItem("products")) ?? []);
+
+   /*  Edit/Delete product  */
+   const [showEditModal, setShowEditModal] = useState(false);
+   const [showConfirmEditModal, setShowConfirmEditModal] = useState(false);
+   const [showDeleteProducModal, setShowDeleteProducModal] = useState(false);
+   const [productEdit, setProductEdit] = useState({});
+   const [productDelete, setproductDelete] = useState(0);
 
    const appCont = useContext(AppContext);
 
    useEffect(() => {
       localStorage.setItem("products", JSON.stringify(products));
-   },[products])
+   },[products]);
 
    function handleFormSubmit(e){
       e.preventDefault();
@@ -55,7 +69,7 @@ export default function MainPanel(){
       }
       
       setProducts([...products, {
-         id: products.length + 1, 
+         id: products.length === 0 ? 1 : products[products.length - 1].id + 1, 
          name: product === "Other" ? name : product, 
          description: description,
          nutrition: nutrition,
@@ -74,10 +88,32 @@ export default function MainPanel(){
       setPrice("0");
       setQuantity("1");
       setImage("");
-   }
+   };
    function handleDeleteClick(deletedProduct){
-      setProducts(products.filter(prod => prod.id !== deletedProduct.id))
+      setShowDeleteProducModal(true);
+      setproductDelete(deletedProduct);
+   };
+   function handleEditClick(editedProduct){
+      setShowEditModal(true);
+      setProductEdit({...editedProduct});
+   };
+   function modifyProduct(){
+      const copyProducts = products;
+      const index = copyProducts.findIndex(prod => prod.id === productEdit.id);
+      copyProducts[index] = productEdit;
+      setProducts({...copyProducts});
+      setShowEditModal(false);
    }
+   function deleteProduct(){      
+      setProducts(products.filter(prod => prod.id !== productDelete.id))
+   }
+
+   const headerModal = () => {
+      return "Edit product: " + productEdit.name;
+   };
+   const messageDelete = () => {
+      return <p>You are going to delete: <b>{productDelete.name}</b>.<br /> When you remove a product you cannot undo the action. Are you sure to continue?</p>
+   };
 
    return <>
       <section className="grid gap-8">
@@ -106,8 +142,28 @@ export default function MainPanel(){
          {products.length <= 0 ? 
             <p className={appCont.isDarkTheme && "text-white"}>Add your first product</p> 
          : 
-            <ListProduct products={products} onDeleteClick={handleDeleteClick}/>
+            <ListProduct products={products} onDeleteClick={handleDeleteClick} onEditClick={handleEditClick} />
          }
+
+         <Modal show={showEditModal} header={headerModal()} onClose={setShowEditModal}>
+            <EditProductForm product={productEdit} onSetProductEdit={setProductEdit} onEditProduct={setShowConfirmEditModal} />
+         </Modal>
+         
+         <ConfirmDialog 
+            show={showConfirmEditModal} 
+            onClose={setShowConfirmEditModal}
+            message="You are going to modify this product, are you sure to continue?"
+            onAccept={modifyProduct}
+         />
+
+         <ConfirmDialog 
+            show={showDeleteProducModal} 
+            onClose={setShowDeleteProducModal}
+            message={messageDelete()}
+            onAccept={deleteProduct}
+         />
+
+         <Toast />
       </section>
    </>
 }

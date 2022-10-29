@@ -1,6 +1,11 @@
 export default function DropdownList(props){
    return (
-      <ul className={props.className}>
+      <ul className={props.className} 
+         onAnimationEnd={() => {
+            if (props.status === 0) props.onSetStatusDropdown(2)
+         }}
+         
+      >
          {props.list && props.list.map((option, index) => 
             <li 
             name="option" 

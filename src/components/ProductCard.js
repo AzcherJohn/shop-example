@@ -18,7 +18,7 @@ export default function ProductCard(props){
    }
 
    return <>
-      <Link to={"/products/" + id} className="h-[92px]">
+      <Link to={"/products/" + id} state={{title:name}} className="h-[92px]">
          <article className="dark:bg-zinc-500 bg-zinc-300 rounded flex gap-5 px-3 py-2 justify-between items-center">
             <img src={appCont.getImage(img)} alt={name + "Image"} className="product-image"></img>
             <div className="flex-1">

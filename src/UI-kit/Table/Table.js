@@ -25,12 +25,12 @@ export default function Table(props){
       "w-full table-auto datatable"
    );
    const getHeaders = () => {
-      return columns.map((column,index) => <th key={index}>{column.props.header}</th>)
+      return columns.map((column,index) => <th key={index+"th"}>{column.props.header}</th>)
    };
    const getRows = () => {
       return value.map((data,index) => {
          return(
-            <tr key={index}>
+            <tr key={index+"tr"}>
                {getDataRow(data)}
             </tr>
          ); 
@@ -39,11 +39,15 @@ export default function Table(props){
    const getDataRow = (data) => {
       return columns.map((column,index) => {
          return <>
-            <td key={index} className={`flex items-center w-full lg:table-cell lg:w-auto ${column.props.header ? "justify-between" : "justify-center" }`}>
+            <td key={index+"td"} className={`flex items-center w-full lg:table-cell lg:w-auto ${column.props.header ? "justify-between" : "justify-center" }`}>
                {column.props.header && 
-                  <span className="lg:hidden font-bold">{column.props.header}</span>
+                  <span key={index+"head"} className="lg:hidden font-bold">{column.props.header}</span>
                }
-               <span className="text-right lg:text-left">{column.props.body ? column.props.body(data) : data[column.props.field]}</span>
+               <span key={index+"val"} className={`text-right lg:text-left ${!column.props.header && "w-full flex justify-center"}`}>
+                  {`${column.props.prefix ?? ""} `}
+                  {column.props.body ? column.props.body(data) : data[column.props.field]} 
+                  {` ${column.props.suffix ?? ""}`}
+               </span>
             </td>
          </>
       })

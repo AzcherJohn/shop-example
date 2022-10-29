@@ -1,8 +1,5 @@
-import { useState } from 'react';
-import { BrowserRouter, Route, Routes } from "react-router-dom";
-import { Provider } from 'react-redux';
-
-import { productStore } from './store/products';
+import { useState, useEffect } from 'react';
+import { Route, Routes, useLocation } from "react-router-dom";
 
 import MainPanel from './dashboard/MainPanel';
 
@@ -21,34 +18,69 @@ import ProductNutrition from './components/ProductNutrition';
 
 function App() {
   const [product, setProduct] = useState({});
+  const location = useLocation();
+  const [displayLocation, setDisplayLocation] = useState(location);
+  const [transitionStage, setTransistionStage] = useState("animate-fade-in");
+  const [transitionNested, setTransistionNested] = useState("animate-tabs-in");
+  const locationArr = location.pathname?.split("/") ?? [];
 
   function handleProductView(prod){
     setProduct(prod);
-  }
+  };
+
+  useEffect(() => {
+    if (location.pathname !== displayLocation.pathname) 
+      if (!location.state.nested)
+        setTransistionStage("animate-fade-out");
+      else      
+        setTransistionNested("animate-tabs-out");
+  }, [location, displayLocation]);
 
   return <>
-    <Provider store={productStore}>
-      <BrowserRouter>
-        <header className="bg-white dark:bg-slate-800 w-full px-4 py-3 lg:px-10 lg:py-7 border-b-2 dark:border-gray-400 shadow-lg dark:shadow-stone-500 z-10 fixed top-0">
-          <Navbar />
-        </header>
-        <main className='flex-auto flex py-5 lg:py-14 2xl:py-20 px-5 md:px-16 lg:px-24 xl:px-38 bg-slate-200 dark:bg-slate-600 mt-14 lg:mt-24 relative z-0'>
-          <Routes>
-            <Route exact path="/" element={<Home />} />
-            <Route exact path="products" element={<StoreFront />} />
-            <Route exact path="/products/:id" element={<ProductDetail onProductView={handleProductView} />} >
-              <Route exact index path="/products/:id" element={<ProductDescription description={product.description} />} />
-              <Route exact path="storage" element={<ProductStorage storage={product.storage} />} />
-              <Route exact path="nutrition" element={<ProductNutrition nutrition={product.nutrition} />} />
-            </Route>
-            <Route exact path="cart" element={<Cart />} />
-            <Route exact path="dashboard" element={<MainPanel />} />
-            <Route path="*" element={<NotFound />}/>
-          </Routes>
-        </main>
-        <Footer />
-      </BrowserRouter>
-    </Provider>
+    <header className="bg-white dark:bg-slate-800 w-full px-4 py-3 lg:px-10 lg:py-7 border-b-2 dark:border-gray-400 shadow-lg dark:shadow-stone-500 z-10 fixed top-0">
+      <Navbar />
+    </header>
+    <main 
+      className={`${transitionStage} duration-[1ms] lg:duration-150 flex-auto flex py-5 lg:py-14 2xl:py-20 px-5 md:px-16 lg:px-24 xl:px-38 bg-slate-200 dark:bg-slate-600 mt-14 lg:mt-24 relative z-0`}
+      onAnimationEnd={() => {
+        if (transitionStage === "animate-fade-out") {
+          setTransistionStage("animate-fade-in");
+          setDisplayLocation(location);
+        }
+      }}
+    >
+      <Routes location={displayLocation} key={locationArr[1]} >
+        <Route exact path="/" element={<Home />} />
+        <Route exact path="products" element={<StoreFront />} />
+        {/*<Route exact path="/products/:id" element={<ProductDetail onProductView={handleProductView} />} >
+          <Route exact index path="/products/:id" element={<ProductDescription description={product.description} />} />
+          <Route exact path="storage" element={<ProductStorage storage={product.storage} />} />
+          <Route exact path="nutrition" element={<ProductNutrition nutrition={product.nutrition} />} />
+        </Route>*/}
+        <Route exact path="/products/:id/*" 
+          element={<ProductDetail onProductView={handleProductView} >
+            <div className={`${transitionNested} py-4 px-1`}
+              onAnimationEnd={() => {
+                if (transitionNested === "animate-tabs-out") {
+                  setTransistionNested("animate-tabs-in");
+                  setDisplayLocation(location);
+                }
+              }}
+            >               
+              <Routes location={displayLocation} key={locationArr[2]} >
+                <Route exact index path="/*" element={<ProductDescription description={product.description} />} />
+                <Route exact path="/storage" element={<ProductStorage storage={product.storage} />} />
+                <Route exact path="/nutrition" element={<ProductNutrition nutrition={product.nutrition} />} />
+              </Routes>
+            </div>
+          </ProductDetail>} >
+        </Route>
+        <Route exact path="cart" element={<Cart />} />
+        <Route exact path="dashboard" element={<MainPanel />} />
+        <Route path="*" element={<NotFound />}/>
+      </Routes>
+    </main>
+    <Footer />
   </>;
 /*
   if (isLoggin){

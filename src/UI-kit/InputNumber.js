@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 
 import Button from "./Button";
 
-export default function InputText(props){
+export default function InputNumber(props){
    const {
       label, 
       placeholder, 
@@ -19,6 +19,8 @@ export default function InputText(props){
       quantity, 
       className,
       suffix,
+      max,
+      min,
       ...att} = props;
    const [newValue, setNewValue] = useState(value);
 
@@ -45,11 +47,11 @@ export default function InputText(props){
       "absolute mt-[0.6rem] text-slate-500 dark:text-slate-300"
    );
 
-   useEffect(() => {
+   /*useEffect(() => {
       if (isNaN(newValue)) {
          setNewValue(0)
       }
-   },[newValue]);
+   },[newValue]);*/
 
    useEffect(() => {
       setNewValue(value)
@@ -61,21 +63,44 @@ export default function InputText(props){
       let t = 0
       const oneCharacterDecimal = e.target.value.replace(/\./g, match => ++t === 2 ? '' : match)
       // eslint-disable-next-line no-useless-escape
-      const numberValue = oneCharacterDecimal.toString().replace(/[`~!@#$%^&*()_|+\-=?;:'",°<>ñ' '\{\}\[\]\\\/a-z]/gi, "");
-      setNewValue(numberValue);
+      const numberValue = oneCharacterDecimal.toString().replace(/[`~!¡@#$%^&*()_|+\-=?;:'"¨¨¬,°<>ñ' '\{\}\[\]\\\/a-z]/gi, "");
+      
+      if (!numberValue) 
+         setNewValue(0)
+      else
+         setNewValue(numberValue);
    }
 
    function handleFormatNumberBlur(action){
-      let val = newValue;
+      let val = parseFloat(newValue);
       if (action === "add") {
-         val = parseFloat(val) + quant;
-      }else  if (action === "less") {
+        if (max) {
+            if (val < parseFloat(max)) 
+               val = parseFloat(val) + quant;
+            else 
+               val = parseFloat(max);
+         } else {          
+            val = parseFloat(val) + quant;
+         } 
+      } else if (action === "less") {
          val = parseFloat(val) - quant;
+         if (min)
+            if (val <= min)            
+               val = parseFloat(min);
          if (val <= 0) {
             val = 0;
          }
       }
-      const lastValue = (parseFloat(val).toFixed(decimal ? (decimal === true ? 2 : parseInt(decimal)) : 0 )).replace(/(?<!\..*)(\d)(?=(?:\d{3})+(?:\.|$))/g, '$1,')
+      if (max) {
+         if (val > parseFloat(max))
+            val = parseFloat(max);
+      }
+      if (min) {
+         if (val < parseFloat(min))
+            val = parseFloat(min);
+      }
+      const lastValue = (parseFloat(val).toFixed(decimal ? (decimal === true ? 2 : parseInt(decimal)) : 0 )).replace(/(\d)(?=(?:\d{3})+(?:\.|$))/g, '$1,')
+      
       setNewValue(lastValue);
       onValueChange(lastValue)
    }
@@ -93,16 +118,17 @@ export default function InputText(props){
    }
    */
    return (
-      <label className={`grid gap-2 ${className}`}>
+      <label className={`grid gap-2 ${className}`} onClick={e => e.stopPropagation()} htmlFor="number-input">
          <p className="first-letter:uppercase">{label} {required ? <span className="text-red-600 font-bold">*</span>  : ""}</p>
          <div className="flex relative">            
-            {buttons && <Button category="action-delete" className="rounded-r-none" onClick={() => handleFormatNumberBlur("less")}>
+            {buttons && <Button category="action-delete" className="rounded-r-none" onClick={() => handleFormatNumberBlur("less")} disabled={newValue <= parseFloat(min)}>
                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-6 h-6">
                   <path strokeLinecap="round" strokeLinejoin="round" d="M18 12H6" />
                </svg>   
             </Button>}
             {currency && <span className={classCurrency}>{currency === true ? "USD" : currency.substring(0,3) }</span>}
             <input 
+               name="number-input"
                type="text" 
                placeholder={placeholder ?? label} 
                value={newValue} 
@@ -113,7 +139,7 @@ export default function InputText(props){
                onFocus={handleFormatNumberFocus}
             />    
             {suffix && <span className={classSuffix}>{suffix && suffix.substring(0,3) }</span>}        
-            {buttons && <Button category="action-add" className="rounded-l-none " onClick={() => handleFormatNumberBlur("add")}>
+            {buttons && <Button category="action-add" className="rounded-l-none " onClick={() => handleFormatNumberBlur("add")} disabled={newValue >= parseFloat(max)}>
                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-6 h-6">
                   <path strokeLinecap="round" strokeLinejoin="round" d="M12 6v12m6-6H6" />
                </svg>
