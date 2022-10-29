@@ -1,4 +1,4 @@
-import { createContext, useState, useEffect } from "react";
+import { createContext, useState } from "react";
 
 const AppContext = createContext();
 
@@ -23,18 +23,21 @@ function AppProvider(props){
    function handleOpenSidebar(){
       setShowSidebar(1);
    }
+   function handleDefaultSidebar(){
+      setShowSidebar(2);
+   }
    function getImage(name){
       return require("../img/" + name); 
    }
    
-   useEffect(() => {
+   /*useEffect(() => {
       if (showSidebar === 0) {    
          const timer = setTimeout(() => {
             setShowSidebar(2);
          }, 300);
          return () => clearTimeout(timer);
       }
-   },[showSidebar])
+   },[showSidebar])*/
 
    const value = {
       isDarkTheme,
@@ -43,6 +46,7 @@ function AppProvider(props){
       onThemeDark: handleThemeDark,
       onCloseSidebar: handleCloseSidebar,
       onOpenSidebar: handleOpenSidebar,
+      onDefaultSidebar: handleDefaultSidebar,
    }
 
    return<>

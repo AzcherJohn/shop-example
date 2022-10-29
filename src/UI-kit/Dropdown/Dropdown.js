@@ -31,14 +31,14 @@ export default function Dropdown(props) {
             setStatusDropdown(1);
    }
 
-   useEffect(() => {
+   /*useEffect(() => {
       if (statusDropdown === 0) {    
          const timer = setTimeout(() => {
             setStatusDropdown(2);
          }, 300);
          return () => clearTimeout(timer);
       }
-   },[statusDropdown])
+   },[statusDropdown])*/
    
 
    useEffect(() => {      
@@ -67,7 +67,7 @@ export default function Dropdown(props) {
       <p>{label} {required ? <span className="text-red-700 font-bold">*</span> : ""}</p>
       <div name="select" className="flex flex-col relative" tabIndex={0} onBlur={handleClickOutside} {...att}>
          <DropdownPanel label={value} onChangeStateClick={handleChangeStateClick} status={statusDropdown} />
-         <DropdownList className={classList} list={options} select={optionSelected} onSelectionClick={handleSelectionClick} />
+         <DropdownList className={classList} list={options} select={optionSelected} onSetStatusDropdown={setStatusDropdown} onSelectionClick={handleSelectionClick} status={statusDropdown} />
       </div>
    </label>
    </>);

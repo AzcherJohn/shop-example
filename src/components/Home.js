@@ -6,9 +6,9 @@ export default function Home(){
          <article className="flex flex-col gap-5 flex-auto">
             <h1>Online Shopping Example</h1>
             <p>This is just an example of a <i>Online Shop</i>. This was the last proyect of a React certificated. I hope you enjoy the page as much as I do it making it and learning.</p>
-            <p><a href="https://lordicon.com/">Animated icons by Lordicon.com</a></p>
-            <p>https://lukaszadam.com/illustrations</p>
-            <p>https://heroicons.com/</p>
+            <p><a href="https://lordicon.com/" target="_blank" rel="noreferrer">Animated icons by Lordicon.com</a></p>
+            <p><a href="https://lukaszadam.com/illustrations" target="_blank" rel="noreferrer">https://lukaszadam.com/illustrations</a></p>
+            <p><a href="https://heroicons.com/" target="_blank" rel="noreferrer">https://heroicons.com/</a></p>
             <div className="mt-5">
                <Link to="products" className="btn-link">Start shopping</Link>
             </div>

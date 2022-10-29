@@ -56,6 +56,22 @@ module.exports = {
           "0%": { transform: "rotate(-135deg)", "-webkit-transform": "rotate(-135deg)", },
           "100%": { transform: "rotate(-315deg)", "-webkit-transform": "rotate(-315deg)", },
         },
+        "tabs-in": {
+          "0%": {transform: "translateX(5%)", opacity: 0, "-webkit-transform": "translateX(5%)",},
+          "100%": {transform: "translateY(0%)", opacity: 1, "-webkit-transform": "translateX(0%)",},
+        },
+        "tabs-out": {
+          "0%": {transform: "translateX(0%)", opacity: 1, "-webkit-transform": "translateX(0%)",},
+          "100%": {transform: "translateX(5%)", opacity: 0, "-webkit-transform": "translateX(5%)",},
+        },
+        "fade-in":{
+          from: { opacity: 0, },
+          to: { opacity: 1, }
+        },
+        "fade-out":{
+          from: { opacity: 1, },
+          to: { opacity: 0, }
+        },
       },
       animation: {
         "in-bottom": "b-t-t 200ms ease-in-out forwards",
@@ -70,6 +86,10 @@ module.exports = {
         "dropdown-close-t": "dropdown-close-t 300ms ease-in-out forwards",
         "dropdown-open-arrow": "dropdown-open-arrow 300ms ease-in-out forwards",
         "dropdown-close-arrow": "dropdown-close-arrow 300ms ease-in-out forwards",
+        "tabs-in": "tabs-in 150ms ease-in-out forwards",
+        "tabs-out": "tabs-out 150ms ease-in-out forwards",
+        "fade-in": "fade-in 150ms ease-in-out forwards",
+        "fade-out": "fade-out 150ms ease-in-out forwards",
       }
     },
   },
