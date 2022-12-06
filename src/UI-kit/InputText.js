@@ -1,11 +1,11 @@
 import clsx from "clsx";
 
 export default function InputText(props){
-   const {type, label, placeholder, required, className, ...att} = props;
+   const {type, label, placeholder, required, className, isError, ...att} = props;
 
    const classes = clsx({
-      "border-red-600 dark:border-orange-500": props.error,
-      "border-slate-400": !props.error,
+      "border-red-600 dark:border-orange-500": isError,
+      "border-slate-400": !isError,
    },
    "p-2 border rounded-md hover:border-cyan-500 dark:bg-gray-600 disabled:bg-stone-200/60"
    );

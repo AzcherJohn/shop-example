@@ -1,8 +1,9 @@
 import { useContext, useEffect, useState } from "react";
+
 import { AppContext } from "../context/AppContext";
+
 import ConfirmDialog from "../UI-kit/Dialog/ConfirmDialog";
 import Modal from "../UI-kit/Dialog/Modal";
-import Toast from "../UI-kit/Toast";
 
 import AddProductForm from "./AddProductForm";
 import EditProductForm from "./EditProductForm";
@@ -25,7 +26,7 @@ const nutritionTable = {
 const optionsImage = ["1414-circle.svg","1416-triangle.svg","1417-rounded-square.svg","1422-polygon.svg",]
 
 export default function MainPanel(){   
-   /*  New product  */
+   //*  New product 
    const [name, setName] = useState("");
    const [description, setDescription] = useState("");
    const [nutrition, setNutrition] = useState(nutritionTable);
@@ -36,25 +37,25 @@ export default function MainPanel(){
    const [product, setProduct] = useState(optionsProduct[0].label);
    const [validation, setValidation] = useState("");
 
-   /*  All products  */
+   // *  All products
    const [products, setProducts] = useState(() => JSON.parse(localStorage.getItem("products")) ?? []);
 
-   /*  Edit/Delete product  */
+   //*  Edit/Delete product
    const [showEditModal, setShowEditModal] = useState(false);
    const [showConfirmEditModal, setShowConfirmEditModal] = useState(false);
    const [showDeleteProducModal, setShowDeleteProducModal] = useState(false);
    const [productEdit, setProductEdit] = useState({});
    const [productDelete, setproductDelete] = useState(0);
 
-   const appCont = useContext(AppContext);
+   const appContext = useContext(AppContext);
 
    useEffect(() => {
       localStorage.setItem("products", JSON.stringify(products));
+      setProductEdit(products[0]);
    },[products]);
 
    function handleFormSubmit(e){
       e.preventDefault();
-      console.log("sumbit form")
       if (!name && product === "Other") {
          setValidation("Please enter a name");
          return ;
@@ -88,6 +89,8 @@ export default function MainPanel(){
       setPrice("0");
       setQuantity("1");
       setImage("");
+      
+      appContext.onAddToast({severity:"success", summary:"Correct", detail:"You create a new product"});
    };
    function handleDeleteClick(deletedProduct){
       setShowDeleteProducModal(true);
@@ -101,11 +104,13 @@ export default function MainPanel(){
       const copyProducts = products;
       const index = copyProducts.findIndex(prod => prod.id === productEdit.id);
       copyProducts[index] = productEdit;
-      setProducts({...copyProducts});
+      setProducts([...copyProducts]);
       setShowEditModal(false);
+      appContext.onAddToast({severity:"success", summary:"Correct", detail:"You edit a product"});
    }
    function deleteProduct(){      
-      setProducts(products.filter(prod => prod.id !== productDelete.id))
+      setProducts(products.filter(prod => prod.id !== productDelete.id));      
+      appContext.onAddToast({severity:"success", summary:"Correct", detail:"You have delete a product"});
    }
 
    const headerModal = () => {
@@ -140,7 +145,7 @@ export default function MainPanel(){
             onFormSubmit={handleFormSubmit}
          />
          {products.length <= 0 ? 
-            <p className={appCont.isDarkTheme && "text-white"}>Add your first product</p> 
+            <p>Add your first product</p> 
          : 
             <ListProduct products={products} onDeleteClick={handleDeleteClick} onEditClick={handleEditClick} />
          }
@@ -154,6 +159,7 @@ export default function MainPanel(){
             onClose={setShowConfirmEditModal}
             message="You are going to modify this product, are you sure to continue?"
             onAccept={modifyProduct}
+            onReject={() => null}
          />
 
          <ConfirmDialog 
@@ -161,9 +167,8 @@ export default function MainPanel(){
             onClose={setShowDeleteProducModal}
             message={messageDelete()}
             onAccept={deleteProduct}
+            onReject={() => null}
          />
-
-         <Toast />
       </section>
    </>
 }

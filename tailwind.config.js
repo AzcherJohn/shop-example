@@ -89,7 +89,7 @@ module.exports = {
         "tabs-in": "tabs-in 150ms ease-in-out forwards",
         "tabs-out": "tabs-out 150ms ease-in-out forwards",
         "fade-in": "fade-in 150ms ease-in-out forwards",
-        "fade-out": "fade-out 150ms ease-in-out forwards",
+        "fade-out": "fade-out 250ms ease-in-out forwards",
       }
     },
   },

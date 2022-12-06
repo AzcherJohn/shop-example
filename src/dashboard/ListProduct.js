@@ -7,6 +7,7 @@ import Table from "../UI-kit/Table/Table";
 
 export default function ListProduct(props){
    const appCont = useContext(AppContext);
+
    const buttons = (product) => {
       return <>
          <div className="flex justify-around w-full">
@@ -23,11 +24,12 @@ export default function ListProduct(props){
          </div>
       </>
    };
+
    const showImage = (product) => {
       return <img src={appCont.getImage(product.img)} className="product-image" alt={product.name}/>
    }
    return <div className="grid gap-8">   
-      <Table header="Products" value={props.products}>
+      <Table header="Products" value={props.products} paginator rows={4} rowsPerPage={[4,6,8,12]} expandedRows={"nutrition"}>
          <Column body={showImage} /> 
          <Column header="Name" field="name" /> 
          <Column header="Description" field="description" /> 
