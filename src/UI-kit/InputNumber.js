@@ -21,12 +21,13 @@ export default function InputNumber(props){
       suffix,
       max,
       min,
+      isError,
       ...att} = props;
    const [newValue, setNewValue] = useState(value);
 
    const classes = clsx({
-         "border-red-600 dark:border-orange-500": props.error,
-         "border-slate-400": !props.error,
+         "border-red-600 dark:border-orange-500": isError,
+         "border-slate-400": !isError,
          "pl-12 w-[calc(100%-3.5rem)]": currency,
          "pr-10 w-[calc(100%-3.5rem)]": suffix,
          "rounded-md" : !buttons,
@@ -106,7 +107,7 @@ export default function InputNumber(props){
    }
 
    function handleFormatNumberFocus(){
-      setNewValue(value.replace(/,/g, ""));
+      if (isNaN(value)) setNewValue(value.replace(/,/g, ""));
    }
    /*
    function handleIncrementClick(){

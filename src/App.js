@@ -1,18 +1,27 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import { Route, Routes, useLocation } from "react-router-dom";
+
+import { AppContext } from './context/AppContext';
+
+import Toast from './UI-kit/Toast/Toast';
+import ToastCard from './UI-kit/Toast/ToastCard';
 
 import MainPanel from './dashboard/MainPanel';
 
+import ProductDetail from './components/product/ProductDetail';
+import ProductDescription from "./components/product/ProductDescription";
+import ProductStorage from './components/product/ProductStorage';
+import ProductNutrition from './components/product/ProductNutrition';
+
 import StoreFront from './components/StoreFront';
-import ProductDetail from './components/ProductDetail';
-import ProductDescription from "./components/ProductDescription";
 import NotFound from './components/NotFound';
 import Navbar from './components/Navbar';
 import Home from './components/Home';
 import Cart from './components/Cart';
 import Footer from './components/Footer';
-import ProductStorage from './components/ProductStorage';
-import ProductNutrition from './components/ProductNutrition';
+import HowTo from './components/HowTo';
+import Payment from './components/Payment';
+import CompletedPurchase from './components/CompletedPurchase';
 
 //import Container from './UI-kit/Container';
 
@@ -23,6 +32,7 @@ function App() {
   const [transitionStage, setTransistionStage] = useState("animate-fade-in");
   const [transitionNested, setTransistionNested] = useState("animate-tabs-in");
   const locationArr = location.pathname?.split("/") ?? [];
+  const appContext = useContext(AppContext);
 
   function handleProductView(prod){
     setProduct(prod);
@@ -40,6 +50,7 @@ function App() {
     <header className="bg-white dark:bg-slate-800 w-full px-4 py-3 lg:px-10 lg:py-7 border-b-2 dark:border-gray-400 shadow-lg dark:shadow-stone-500 z-10 fixed top-0">
       <Navbar />
     </header>
+    
     <main 
       className={`${transitionStage} duration-[1ms] lg:duration-150 flex-auto flex py-5 lg:py-14 2xl:py-20 px-5 md:px-16 lg:px-24 xl:px-38 bg-slate-200 dark:bg-slate-600 mt-14 lg:mt-24 relative z-0`}
       onAnimationEnd={() => {
@@ -77,9 +88,19 @@ function App() {
         </Route>
         <Route exact path="cart" element={<Cart />} />
         <Route exact path="dashboard" element={<MainPanel />} />
+        <Route exact path="how-to" element={<HowTo />} />
+        <Route exact path="payment" element={<Payment />} /> 
+        <Route  exact path="payment/completed-purchase" element={<CompletedPurchase />} />
         <Route path="*" element={<NotFound />}/>
       </Routes>
-    </main>
+    </main>      
+
+    <Toast>
+      {appContext.toastList && 
+        appContext.toastList.map(toast => <ToastCard toast={toast} key={toast.id} />
+      )}
+    </Toast>
+    
     <Footer />
   </>;
 /*

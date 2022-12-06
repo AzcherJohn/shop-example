@@ -7,6 +7,13 @@ import { cartCountSelector } from "../store/productsStore";
 
 import Button from "../UI-kit/Button";
 
+const menu = [
+   {title:"Home",path:"/"},
+   {title:"How To",path:"how-to"},
+   {title:"Products",path:"products"},
+   {title:"Dashboard",path:"dashboard"},
+]
+
 export default function Navbar(){
    const [endAnimation, setEndAnimation] = useState(true);
    const appCont = useContext(AppContext);
@@ -42,15 +49,20 @@ export default function Navbar(){
    },
    "fixed flex flex-col items-start gap-6 right-0 px-6 w-full py-6 bottom-0 top-14 bg-slate-200",
    "dark:bg-slate-700",
-   "lg:bg-white lg:h-auto lg:flex-row lg:top-auto lg:right-auto lg:py-0 lg:px-0 lg:relative lg:flex-1 lg:flex lg:gap-12 lg:mx-9 lg:justify-end lg:items-center",
+   "lg:bg-white lg:h-auto lg:flex-row lg:top-auto lg:right-auto lg:py-0 lg:px-0 lg:relative lg:flex-1 lg:flex lg:gap-5 xl:gap-12 lg:mx-9 lg:justify-end lg:items-center",
    "lg:dark:bg-slate-800",
    );
+
+   function handleCleanLocalStorageClick(){
+      localStorage.clear();
+      window.location.reload(false);
+   }
 
    return (
       <nav className="flex justify-between">
          <figure>
             <figcaption>
-               <Link to="/">
+               <Link to="/" state={{title:"Home"}}>
                   <h1 className="text-2xl font-extrabold tracking-wider">Azcher<span className="text-teal-700">Shop</span></h1>
                </Link>
             </figcaption>
@@ -62,40 +74,27 @@ export default function Navbar(){
             }}
          >
             <hr className="lg:hidden"/>
-            <NavLink 
-               onClick={() => appCont.onCloseSidebar()} 
-               className={({ isActive }) => isActive ? "active-nav" : "primary-link"}
-               state={{title:"Home"}}
-               end to="/">
-                  Home
-            </NavLink>
-            <NavLink 
-               onClick={() => appCont.onCloseSidebar()} 
-               className={({ isActive }) => isActive ? "active-nav" : "primary-link"} 
-               state={{title:"About"}}
-               to="about">
-                  About
-            </NavLink>
-            <NavLink 
-               onClick={() => appCont.onCloseSidebar()} 
-               className={({ isActive }) => 
-               isActive ? "active-nav" : "primary-link"}  
-               state={{title:"Products"}}
-               to="products">
-                  Products
-            </NavLink>
-            <NavLink 
-               onClick={() => appCont.onCloseSidebar()} 
-               className={({ isActive }) => isActive ? "active-nav" : "primary-link"}  
-               state={{title:"Dashboard"}}
-               to="dashboard">
-                  Dashboard
-            </NavLink>
+            {
+               menu.map(element => 
+                  <NavLink 
+                     key={element.path}
+                     onClick={() => appCont.onCloseSidebar()} 
+                     className={({ isActive }) => isActive ? "active-nav" : "primary-link"}
+                     state={{title:element.title}}
+                     end={element.path === "/"} 
+                     to={element.path}>
+                        {element.title}
+                  </NavLink>   
+               )
+            }
             <hr className="lg:hidden"/>
             <Button category="action-toggle" className="self-center" onClick={() => appCont.onThemeDark()}>
                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-6 h-6 text-black dark:text-white">
                   <path strokeLinecap="round" strokeLinejoin="round" d="M12 3v2.25m6.364.386l-1.591 1.591M21 12h-2.25m-.386 6.364l-1.591-1.591M12 18.75V21m-4.773-4.227l-1.591 1.591M5.25 12H3m4.227-4.773L5.636 5.636M15.75 12a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0z" />
                </svg>
+            </Button>
+            <Button category="btn-primary" className="self-center" onClick={handleCleanLocalStorageClick}>
+               Clean Information
             </Button>
             <Link to="cart" className="btn-cart self-center" state={{title:"Cart"}}>Cart ({count})</Link>
          </div>

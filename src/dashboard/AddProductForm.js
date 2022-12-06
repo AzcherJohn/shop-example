@@ -38,7 +38,7 @@ export default function AddProductForm(props){
                <InputText 
                   label="Name"
                   placeholder="Enter the name" 
-                  error={props.validation && !props.name} 
+                  isError={props.validation && !props.name} 
                   value={props.name} 
                   onChange={e => props.onSetName(e.target.value)}
                   required
@@ -48,7 +48,7 @@ export default function AddProductForm(props){
             <InputText 
                label="Description"
                placeholder="Enter the description" 
-               error={props.validation && !props.description} 
+               isError={props.validation && !props.description} 
                value={props.description} 
                onChange={e => props.onSetDescription(e.target.value)}
                required
@@ -67,7 +67,7 @@ export default function AddProductForm(props){
                decimal
                value={props.price} 
                onValueChange={e => props.onSetPrice(e)}
-               error={props.validation && props.price <= 0} 
+               isError={props.validation && props.price <= 0} 
                required
                className="col-span-6 sm:col-span-2 lg:col-span-1"
             />
@@ -75,7 +75,7 @@ export default function AddProductForm(props){
                label="Quantity"
                value={props.quantity} 
                onValueChange={e => props.onSetQuantity(e)}
-               error={props.validation &&  props.quantity <= 0} 
+               isError={props.validation &&  props.quantity <= 0} 
                required
                buttons
                quantity="10"
@@ -105,7 +105,7 @@ export default function AddProductForm(props){
                               label={key}
                               value={props.nutrition[key]} 
                               onValueChange={e => handleNutritionValues(e, key)}
-                              error={props.validation && props.nutrition[key] <= 0} 
+                              isError={props.validation && props.nutrition[key] <= 0} 
                               required
                               suffix="gr"
                            /> 
